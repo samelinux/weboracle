@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+	<head>
+		<title>weboracle</title>
+		<meta name="theme-color" content="#080808">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+		<link rel="manifest" href='manifest.json'>
+	</head>
+	<style>
+body,html {
+	padding:0px;margin:0px;
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	width:100%;
+	height:100%;
+	background-color:#080808;
+}
+.content {
+	display:table;
+	width:100%;
+	height:100%;
+}
+.cell {
+	display:none;
+	vertical-align:middle;
+	color:white;
+	font-size:290%;
+	font-weight:bold;
+	text-align:center;
+	width:100%;
+	height:100%;
+}
+.colorNo { color:#EEEEEE; }
+.colorYes { color:#EEEEEE; }
+.noAnd { background-color:#441111; }
+.no { background-color:#441111; }
+.noBut { background-color:#441111; }
+.yesBut { background-color:#114411; }
+.yes { background-color:#114411; }
+.yesAnd { background-color:#114411; }
+.mini { font-size:50%;font-weight:normal; }
+.miniNo { color:#999999; }
+.miniYes { color:#999999; }
+.normal { padding:50px; }
+	</style>
+	<body onload='onLoad();'>
+		<div class='content'>
+			<div class='cell colorNo noAnd' id='noAnd'>
+				<div class='mini miniNo'>&nbsp</div>
+				<div class='normal'>NO, AND</div>
+				<div class='mini miniNo'>NO</div>
+			</div>
+			<div class='cell colorNo no' id='no'>
+				<div class='mini miniNo'>NO, AND</div>
+				<div class='normal'>NO</div>
+				<div class='mini miniNo'>NO, BUT</div>
+			</div>
+			<div class='cell colorNo noBut' id='noBut'>
+				<div class='mini miniNo'>NO</div>
+				<div class='normal'>NO, BUT</div>
+				<div class='mini miniNo'>YES, BUT</div>
+			</div>
+			<div class='cell colorYes yesBut' id='yesBut'>
+				<div class='mini miniYes'>NO, BUT</div>
+				<div class='normal'>YES, BUT</div>
+				<div class='mini miniYes'>YES</div>
+			</div>
+			<div class='cell colorYes yes' id='yes'>
+				<div class='mini miniYes'>YES, BUT</div>
+				<div class='normal'>YES</div>
+				<div class='mini miniYes'>YES, AND</div>
+			</div>
+			<div class='cell colorYes yesAnd' id='yesAnd'>
+				<div class='mini miniYes'>YES</div>
+				<div class='normal'>YES, AND</div>
+				<div class='mini miniYes'>&nbsp</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script>
+	let cells=[];
+	function rand() {
+		cells.forEach((e)=>e.style.display='none');
+		cells[Math.random()*cells.length|0].style.display='table-cell';
+		//cells[0].style.display='table-cell';
+	}
+	function srand(timeout) {
+		rand();
+		if(timeout>0) setTimeout(()=>{srand(timeout-1);},timeout/1)
+	}
+	function onLoad() {
+		navigator.serviceWorker.register("serviceWorker.js");
+		cells.push(document.getElementById('noAnd'));
+		cells.push(document.getElementById('no'));
+		cells.push(document.getElementById('noBut'));
+		cells.push(document.getElementById('yesBut'));
+		cells.push(document.getElementById('yes'));
+		cells.push(document.getElementById('yesAnd'));
+		document.addEventListener('click', function(evt) { srand(15); }, false);
+		document.addEventListener('touch', function(evt) { srand(15); }, false);
+		document.addEventListener('keydown', function(evt) { srand(15); }, false);
+		srand(15);
+	}
+</script>
